@@ -1,23 +1,161 @@
-# Unsupervised learning
+## **k-Means clustering**
 
-Unsupervised learning is a type of algorithm that learns patterns from untagged data. The hope is that through mimicry, which is an important mode of learning in people, the machine is forced to build a compact internal representation of its world and then generate imaginative content from it. In contrast to [supervised learning](https://en.wikipedia.org/wiki/Supervised_learning) where data is tagged by an expert, e.g. as a &quot;ball&quot; or &quot;fish&quot;, unsupervised methods exhibit self-organization that captures patterns as probability densities [[1]](https://en.wikipedia.org/wiki/Unsupervised_learning#cite_note-Hinton99a-1) or a combination of neural feature preferences. The other levels in the supervision spectrum are [reinforcement learning](https://en.wikipedia.org/wiki/Reinforcement_learning) where the machine is given only a numerical performance score as guidance, and [semi-supervised learning](https://en.wikipedia.org/wiki/Semi-supervised_learning) where a smaller portion of the data is tagged. Two broad methods in Unsupervised Learning are Neural Networks and Probabilistic Methods.
+**Clustering**  is one of the most common exploratory data analysis technique used to get an intuition about the structure of the data. It can be defined as the task of identifying subgroups in the data such that data points in the same subgroup (cluster) are very similar while data points in different clusters are very different. In other words, we try to find homogeneous subgroups within the data such that data points in each cluster are as similar as possible according to a similarity measure such as euclidean-based distance or correlation-based distance. The decision of which similarity measure to use is application-specific.
 
-## **Neural works**
+Clustering analysis can be done on the basis of features where we try to find subgroups of samples based on features or on the basis of samples where we try to find subgroups of features based on samples. We&#39;ll cover here clustering based on features. Clustering is used in market segmentation; where we try to find customers that are similar to each other whether in terms of behaviors or attributes, image segmentation/compression; where we try to group similar regions together, document clustering based on topics, etc.
 
-Tasks vs Methods
+Unlike supervised learning, clustering is considered an unsupervised learning method since we don&#39;t have the ground truth to compare the output of the clustering algorithm to the true labels to evaluate its performance. We only want to try to investigate the structure of the data by grouping the data points into distinct subgroups.
 
-Neural network tasks are often categorized as discriminative (recognition) or generative (imagination). Often but not always, discriminative tasks use supervised methods and generative tasks use unsupervised (see Venn diagram); however, the separation is very hazy. For example, object recognition favors supervised learning but unsupervised learning can also cluster objects into groups. Furthermore, as progress marches onward some tasks employ both methods, and some tasks swing from one to another. For example, image recognition started off as heavily supervised, but became hybrid by employing unsupervised pre-training, and then moved towards supervision again with the advent of dropout, relu, and adaptive learning rates.
+In this post, we will cover only  **Kmeans**  which is considered as one of the most used clustering algorithms due to its simplicity.
 
-Training
+# Kmeans Algorithm
 
-During the learning phase, an unsupervised network tries to mimic the data it&#39;s given and uses the error in its mimicked output to correct itself (ie. correct its weights &amp; biases). This resembles the mimicry behavior of children as they learn a language. Sometimes the error is expressed as a low probability that the erroneous output occurs, or it might be expressed as an unstable high energy state in the network.
+**Kmeans**  algorithm is an iterative algorithm that tries to partition the dataset into _K_pre-defined distinct non-overlapping subgroups (clusters) where each data point belongs to  **only one group**. It tries to make the intra-cluster data points as similar as possible while also keeping the clusters as different (far) as possible. It assigns data points to a cluster such that the sum of the squared distance between the data points and the cluster&#39;s centroid (arithmetic mean of all the data points that belong to that cluster) is at the minimum. The less variation we have within clusters, the more homogeneous (similar) the data points are within the same cluster.
 
-In contrast to Supervised method&#39;s dominant use of Backpropagation, Unsupervised Learning also employ other methods including: Hopfield learning rule, Boltzmann learning rule, Contrastive Divergence, Wake Sleep, Variational Inference, Maximum Likelihood, Maximum A Posteriori, Gibbs Sampling, and backpropagating reconstruction errors or hidden state reparameterizations. See the table below for more details.
+The way kmeans algorithm works is as follows:
 
-Energy
+1. Specify number of clusters _K_.
+2. Initialize centroids by first shuffling the dataset and then randomly selecting _K _data points for the centroids without replacement.
+3. Keep iterating until there is no change to the centroids. i.e assignment of data points to clusters isn&#39;t changing.
 
-An energy function is a macroscopic measure of a network&#39;s activation state. In Boltzmann machines, it plays the role of the Cost function. This analogy with physics is inspired by Ludwig Boltzmann&#39;s analysis of a gas&#39; macroscopic energy from the microscopic probabilities of particle motion p {\displaystyle \propto } ![Shape1](RackMultipart20220507-1-gpoazl_html_49ac0cb03196381.gif)  eE/kT, where k is the Boltzmann constant and T is temperature. In the RBM network the relation is p = e−E / Z,[[2]](https://en.wikipedia.org/wiki/Unsupervised_learning#cite_note-Hinton2010-2) where p &amp; E vary over every possible activation pattern and Z = {\displaystyle \sum \_{AllPatterns}} ![Shape2](RackMultipart20220507-1-gpoazl_html_49ac0cb03196381.gif)  e -E(pattern). To be more precise, p(a) = e-E(a) / Z, where a is an activation pattern of all neurons (visible and hidden). Hence, early neural networks bear the name Boltzmann Machine. Paul Smolensky calls -E the Harmony. A network seeks low energy which is high Harmony.
+- Compute the sum of the squared distance between data points and all centroids.
+- Assign each data point to the closest cluster (centroid).
+- Compute the centroids for the clusters by taking the average of the all data points that belong to each cluster.
 
-![](RackMultipart20220507-1-gpoazl_html_6c3c8e69bede05ec.png)
-![image](https://user-images.githubusercontent.com/101298565/167271659-ccb65910-582c-424b-8caa-349bae040c57.png)
+The approach kmeans follows to solve the problem is called  **Expectation-Maximization**. The E-step is assigning the data points to the closest cluster. The M-step is computing the centroid of each cluster. Below is a break down of how we can solve it mathematically (feel free to skip it).
 
+The objective function is:
+![image](https://user-images.githubusercontent.com/101298565/167272059-2434b9be-2b3a-45bd-b1a6-c49b132220b4.png)
+
+
+![](RackMultipart20220507-1-t8me6l_html_465cf78fa18b7264.png)
+
+where wik=1 for data point xi if it belongs to cluster _k_; otherwise, wik=0. Also, μk is the centroid of xi&#39;s cluster.
+
+It&#39;s a minimization problem of two parts. We first minimize J w.r.t. wik and treat μk fixed. Then we minimize J w.r.t. μk and treat wik fixed. Technically speaking, we differentiate J w.r.t. wik first and update cluster assignments (_E-step_). Then we differentiate J w.r.t. μk and recompute the centroids after the cluster assignments from previous step (_M-step_). Therefore, E-step is:
+
+![](RackMultipart20220507-1-t8me6l_html_3743be6ae1d9ba56.png)
+![image](https://user-images.githubusercontent.com/101298565/167272063-cb22f00d-48cb-4b45-b932-c6f3e5a9a347.png)
+
+
+In other words, assign the data point xi to the closest cluster judged by its sum of squared distance from cluster&#39;s centroid.
+
+And M-step is:
+
+![](RackMultipart20220507-1-t8me6l_html_af1045c9c22e917d.png)
+![image](https://user-images.githubusercontent.com/101298565/167272069-ad89f61a-4595-417d-a41c-f76741aa7e06.png)
+
+
+Which translates to recomputing the centroid of each cluster to reflect the new assignments.
+
+Few things to note here:
+
+- Since clustering algorithms including kmeans use distance-based measurements to determine the similarity between data points, it&#39;s recommended to standardize the data to have a mean of zero and a standard deviation of one since almost always the features in any dataset would have different units of measurements such as age vs income.
+- Given kmeans iterative nature and the random initialization of centroids at the start of the algorithm, different initializations may lead to different clusters since kmeans algorithm may _stuck in a local optimum and may not converge to global optimum_. Therefore, it&#39;s recommended to run the algorithm using different initializations of centroids and pick the results of the run that that yielded the lower sum of squared distance.
+- Assignment of examples isn&#39;t changing is the same thing as no change in within-cluster variation:
+
+![](RackMultipart20220507-1-t8me6l_html_fb7f4d9bd1d5a498.png)
+![image](https://user-images.githubusercontent.com/101298565/167272074-eb3d8750-b7d1-448a-ac94-600dce2e3984.png)
+
+
+![](RackMultipart20220507-1-t8me6l_html_4507fc6d44eb506d.jpg)
+![image](https://user-images.githubusercontent.com/101298565/167272044-0a80ae6e-67b1-4b6d-9ec7-ea98e6bb60cf.png)
+
+
+## **Data Characteristics**
+
+:Number of Instances: 150 (50 in each of three classes)
+
+:Number of Attributes: 4 numeric, predictive attributes and the class
+
+:Attribute Information:
+
+- sepal length in cm
+
+- sepal width in cm
+
+- petal length in cm
+
+- petal width in cm
+
+- class:
+
+- Iris-Setosa
+
+- Iris-Versicolour
+
+- Iris-Virginica
+
+:Summary Statistics:
+
+============== ==== ==== ======= ===== ====================
+
+Min Max Mean SD Class Correlation
+
+============== ==== ==== ======= ===== ====================
+
+sepal length: 4.3 7.9 5.84 0.83 0.7826
+
+sepal width: 2.0 4.4 3.05 0.43 -0.4194
+
+petal length: 1.0 6.9 3.76 1.76 0.9490 (high!)
+
+petal width: 0.1 2.5 1.20 0.76 0.9565 (high!)
+
+============== ==== ==== ======= ===== ====================
+
+:Missing Attribute Values: None
+
+:Class Distribution: 33.3% for each of 3 classes.
+
+:Creator: R.A. Fisher
+
+:Donor: Michael Marshall (MARSHALL%PLU@io.arc.nasa.gov)
+
+:Date: July, 1988
+
+The famous Iris database, first used by Sir R.A. Fisher. The dataset is taken
+
+from Fisher&#39;s paper. Note that it&#39;s the same as in R, but not as in the UCI
+
+Machine Learning Repository, which has two wrong data points.
+
+This is perhaps the best known database to be found in the
+
+pattern recognition literature. Fisher&#39;s paper is a classic in the field and
+
+is referenced frequently to this day. (See Duda &amp; Hart, for example.) The
+
+data set contains 3 classes of 50 instances each, where each class refers to a
+
+type of iris plant. One class is linearly separable from the other 2; the
+
+latter are NOT linearly separable from each other.
+
+References
+
+- Fisher, R.A. &quot;The use of multiple measurements in taxonomic problems&quot;
+
+Annual Eugenics, 7, Part II, 179-188 (1936); also in &quot;Contributions to
+
+Mathematical Statistics&quot; (John Wiley, NY, 1950).
+
+- Duda, R.O., &amp; Hart, P.E. (1973) Pattern Classification and Scene Analysis.
+
+(Q327.D83) John Wiley &amp; Sons. ISBN 0-471-22361-1. See page 218.
+
+- Dasarathy, B.V. (1980) &quot;Nosing Around the Neighborhood: A New System
+
+Structure and Classification Rule for Recognition in Partially Exposed
+
+Environments&quot;. IEEE Transactions on Pattern Analysis and Machine
+
+Intelligence, Vol. PAMI-2, No. 1, 67-71.
+
+- Gates, G.W. (1972) &quot;The Reduced Nearest Neighbor Rule&quot;. IEEE Transactions
+
+on Information Theory, May 1972, 431-433.
+
+- See also: 1988 MLC Proceedings, 54-64. Cheeseman et al&quot;s AUTOCLASS II
+
+conceptual clustering system finds 3 classes in the data.
