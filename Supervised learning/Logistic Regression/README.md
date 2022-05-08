@@ -1,5 +1,5 @@
 
-## **Ensemble Learning**
+## **logistic regression**
 
 Logic Regression is an adaptive regression methodology that attempts to construct predictors as Boolean combinations of binary covariates.
 
