@@ -11,6 +11,9 @@ This splitting rule is then applied to each of the new branches. This process co
 
 ## **Data Characteristics**
 
+
+Cardata.csv is the dataset of the decision tree and I combine the svm and decision tree model in SVM folder.
+
 [SAS code](https://www4.stat.ncsu.edu/~boos/var.select/diabetes.read.tab.txt) to access the data using [the original data set](https://www4.stat.ncsu.edu/~boos/var.select/diabetes.tab.txt) from [Trevor Hastie&#39;s LARS software page.](http://www-stat.stanford.edu/~hastie/Papers/LARS)
 
 [Proc Means and Proc Print Output](https://www4.stat.ncsu.edu/~boos/var.select/diabetes.read.tab.out.txt) when using the above data.
