@@ -11,6 +11,10 @@ Since the number of possible Logic Models we can construct for a given set of pr
 
 ## **Data Characteristics**
 
+I am going to build two logistic models because I felt the first one is not so good. So I decided to make another one to make my grade higher if possible.
+
+
+
 :Number of Instances: 1797
 
 :Number of Attributes: 64
