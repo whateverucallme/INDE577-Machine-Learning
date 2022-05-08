@@ -1,4 +1,4 @@
-## **Regression Tree**
+## **Regression Tree**(there is another Decision tree code in SVM folder)
 
 ![](RackMultipart20220507-1-hbg9c4_html_b0732fb190e0846e.png)
 ![image](https://user-images.githubusercontent.com/101298565/167264996-577826d0-9e2a-4655-a1bc-465b4e9d61b2.png)
